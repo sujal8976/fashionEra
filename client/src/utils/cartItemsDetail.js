@@ -1,0 +1,32 @@
+export const itemDetails = [
+  {
+    title: "Slim Fit Casual Shirt",
+    desc: "Button-Down Colour & Placket...",
+    size: "XL",
+    color: "Maroon",
+    price: 500,
+    oldPrice: 800,
+    brand: "Nike",
+    img: "https://img.freepik.com/free-photo/portrait-handsome-smiling-hipster-businessman-model-wearing-casual-summer-pink-clothes_158538-889.jpg?t=st=1720057980~exp=1720061580~hmac=88e148a218f61add3ab42343ad68bd131bfc7487ab60eccc1e4aceb80a772d9e&w=996",
+  },
+  {
+    title: "Slim Fit Party Shirt",
+    desc: "Button-Down Colour & Placket...",
+    size: "L",
+    color: "Red",
+    price: 1599,
+    oldPrice: 1800,
+    brand: "Prada",
+    img: "https://img.freepik.com/free-photo/fashion-stylish-model-dressed-elegant-light-pink-suit-posing-near-white-wall_158538-13440.jpg?t=st=1720058013~exp=1720061613~hmac=7570d489128cbfe9f3292f63a720b2633198639f9cd65fd71ddfcdb493281849&w=1060",
+  },
+  {
+    title: "Lorem ipsum dolor sit",
+    desc: "Lorem ipsum dolor sit amet....",
+    size: "XL",
+    color: "Black",
+    price: 1399,
+    oldPrice: 2100,
+    brand: "Gucci",
+    img: "https://img.freepik.com/free-photo/portrait-handsome-smiling-stylish-young-man-model-wearing-jeans-clothes-sunglasses-fashion-man_158538-5010.jpg?t=st=1720058040~exp=1720061640~hmac=77d6212d8e60701f8c0f831a1b63534fe0af2ac1299abae59928e0bb240c92a8&w=996",
+  },
+];

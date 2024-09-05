@@ -1,0 +1,194 @@
+.homeBanner {
+  background: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.15) 0%,
+      rgba(0, 0, 0, 0.15) 100%
+    ),
+    radial-gradient(
+        at top center,
+        rgba(255, 255, 255, 0.4) 0%,
+        rgba(0, 0, 0, 0.4) 120%
+      )
+      #989898;
+}
+
+.textGradient {
+  background: linear-gradient(
+    109.6deg,
+    rgb(0, 0, 0) 11.2%,
+    rgb(11, 132, 145) 91.1%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.textGradient2 {
+  background: linear-gradient(
+    135.8deg,
+    rgb(26, 26, 29) 27.1%,
+    rgb(111, 34, 50) 77.5%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.featuredProducts,
+.offers {
+  background: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+}
+
+.categoryCardBg,
+.addToCartContainer {
+  background: linear-gradient(
+    0deg,
+    rgba(212, 216, 217, 0.9822129535407913) 0%,
+    rgba(255, 255, 255, 1) 99%
+  );
+}
+
+.offerSectionUpper1 {
+  background: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.15) 0%,
+      rgba(0, 0, 0, 0.15) 100%
+    ),
+    radial-gradient(
+        at top center,
+        rgba(255, 255, 255, 0.4) 0%,
+        rgba(0, 0, 0, 0.4) 120%
+      )
+      #989898;
+}
+
+.offerSectionUpper2 {
+  background: radial-gradient(
+    circle at 10% 20%,
+    rgb(239, 246, 249) 0%,
+    rgb(206, 239, 253) 90%
+  );
+}
+
+.offerSectionLower1 {
+  background: radial-gradient(
+    755px at 10.1% 95.3%,
+    rgb(242, 188, 141) 0%,
+    rgb(242, 159, 141) 100.2%
+  );
+}
+
+.offerSectionLower2 {
+  background: radial-gradient(
+    circle at 10% 20%,
+    rgb(148, 241, 246) 0%,
+    rgb(148, 189, 246) 100.7%
+  );
+}
+
+.offerSectionLower3 {
+  background: linear-gradient(
+    0deg,
+    rgba(166, 244, 153, 0.9822129535407913) 2%,
+    rgba(180, 237, 163, 1) 98%
+  );
+}
+
+.mensPageBanner,
+.womensPageBanner,
+.kidsPageBanner {
+  background: linear-gradient(to top, #c4c5c7 0%, #dcdddf 52%, #ebebeb 100%);
+}
+
+.mensPageBannerRightSection {
+  background-color: #f1f2f6;
+  background-image: linear-gradient(315deg, #f1f2f6 0%, #c9c6c6 74%);
+}
+
+.loginPage,
+.registerPage {
+  background-image: linear-gradient(
+    to top,
+    lightgrey 0%,
+    lightgrey 1%,
+    #e0e0e0 26%,
+    #efefef 48%,
+    #d9d9d9 75%,
+    #bcbcbc 100%
+  );
+}
+
+input[type="number"]::-webkit-inner-spin-button {
+  display: none;
+}
+
+input[type="number"] {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+/* HTML: <div class="tooltip">This is a Speech Bubble with a gradient coloration and with border radius </div> */
+.tooltip {
+  color: black;
+  font-size: 18px;
+  max-width: 28ch;
+  text-align: center;
+}
+.tooltip {
+  /* triangle dimension */
+  --b: 2em; /* base */
+  --h: 1em; /* height */
+
+  --p: 50%; /* triangle position (0%:left 100%:right) */
+  --r: 1.2em; /* the radius */
+
+  background: 0 100%/100% calc(100% + var(--h))
+    linear-gradient(-30deg, #eef3f3, #e1e5e5);
+  position: relative;
+  z-index: 5;
+}
+.tooltip:before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: calc(-1 * var(--h)) 0 0;
+  background-image: inherit;
+  clip-path: polygon(
+    min(100%, var(--p) + var(--b) / 2) var(--h),
+    var(--p) 0,
+    max(0%, var(--p) - var(--b) / 2) var(--h),
+    50% 50%
+  );
+}
+
+.navbarHr {
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.15);
+}
+
+.addToCartWrapper {
+  transition: opacity 2s ease-in-out;
+}
+
+/* swiper */
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: #fff;
+
+  /* Center slide text vertically */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
