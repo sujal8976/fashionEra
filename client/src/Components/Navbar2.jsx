@@ -1,5 +1,5 @@
 import { ChevronDown, Search, ShoppingCart, User, X } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { setOnPage } from "@/features/onPageCategorySlice.js";

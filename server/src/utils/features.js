@@ -5,6 +5,7 @@ import Review from "../models/review.js";
 
 export const findAverageRatings = async (productId) => {
   let totalRating = 0;
+  let totalReviews = 0;
 
   const reviews = await Review.find({ productId: productId });
 
@@ -12,17 +13,20 @@ export const findAverageRatings = async (productId) => {
     return {
       numOfReviews: 0,
       ratings: 0,
+      numOfRatings: 0,
     };
   }
   for (const review of reviews) {
     totalRating += review.rating;
+    if (review.comment) totalReviews += 1;
   }
 
-  const averageRating = Math.floor(totalRating / reviews.length);
+  const averageRating = totalRating / reviews.length;
 
   return {
-    numOfReviews: reviews.length,
-    ratings: averageRating,
+    numOfReviews:totalReviews,
+    ratings: averageRating.toFixed(2),
+    numOfRatings: reviews.length
   };
 };
 

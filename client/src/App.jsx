@@ -20,6 +20,8 @@ const Product = lazy(() => import("./Pages/Product.jsx"));
 const Cart = lazy(() => import("./Pages/Cart.jsx"));
 const Login = lazy(() => import("./Pages/Login.jsx"));
 const Orders = lazy(() => import("./Pages/Orders/Orders.jsx"));
+const ConfirmUser = lazy(() => import("./Pages/UserConfirmation"));
+const EnterPassword = lazy(()=>import('./Pages/EnterPassword'))
 const Register = lazy(() => import("./Pages/Register.jsx"));
 const NotFound = lazy(() => import("./Components/NotFound.jsx"));
 const Dashboard = lazy(() => import("./Admin/Dashboard.jsx"));
@@ -34,6 +36,7 @@ const AdminSettings = lazy(() => import("./Admin/Pages/Settings.jsx"));
 function App() {
   const dispatch = useDispatch();
   const { loading, user } = useSelector((state) => state.userReducer);
+  const { confirm } = useSelector((state) => state.confirmUserReducer);
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("currentUser"));
@@ -46,7 +49,18 @@ function App() {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         console.log("logged in");
-        dispatch(userExist(user));
+        dispatch(
+          userExist({
+            userId: user._id,
+            name: user.displayName,
+            email: user.email,
+            gender: user.gender,
+            phone: user?.phoneNumber || null,
+            isAdmin: user.isAdmin,
+            profileUrl: user?.photoURL || null,
+            googleId: user?.uid || null,
+          })
+        );
       } else {
         console.log("not logged in");
         dispatch(userNotExist());
@@ -70,7 +84,7 @@ function App() {
               <Route path="/kids" element={<Kids />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/products" element={<Products />} />
-              <Route path="/product" element={<Product />} />
+              <Route path="/product/:id" element={<Product />} />
 
               {/* Not logged in route */}
               <Route
@@ -81,6 +95,13 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
               </Route>
+
+              {/* confirm user route */}
+              <Route element={<ProtectedRoute confirmUser={confirm} />}>
+                <Route path="/confirm-user" element={<ConfirmUser />} />
+                <Route path="/enter-pass" element={<EnterPassword />} />
+              </Route>
+
               {/* Logged in user Route */}
               <Route
                 element={
@@ -89,6 +110,7 @@ function App() {
               >
                 <Route path="/orders" element={<Orders />} />
               </Route>
+
               <Route path="/admin" element={<Dashboard />}>
                 <Route path="" element={<Overview />} />
                 <Route path="products" element={<AdminProducts />} />

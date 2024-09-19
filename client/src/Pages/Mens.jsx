@@ -13,7 +13,6 @@ export default function Mens() {
       .filter((category) => !category?.parentCategory)
       .forEach((category) => {
         if (category.catName.toLowerCase() === "mens") {
-          console.log(category);
           (parentCatMen._id = category._id),
             (parentCatMen.catName = category.catName);
         }

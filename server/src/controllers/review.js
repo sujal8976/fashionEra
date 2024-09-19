@@ -14,7 +14,7 @@ export const allReviewsOfProduct = async (req, res, next) => {
     reviews = await Review.find({
       productId: req.params.productId,
     })
-      .populate("authorId", "firstName lastName")
+      .populate("author", "name image")
       .sort({
         updatedAt: -1,
       });
@@ -26,7 +26,6 @@ export const allReviewsOfProduct = async (req, res, next) => {
   invalidateCache({
     product: true,
     productId: String(req.params.productId),
-    admin: true,
     review: true,
   });
 
@@ -46,7 +45,7 @@ export const newReview = async (req, res, next) => {
   const { comment, rating } = req.body;
 
   const allreadyReviewed = await Review.findOne({
-    authorId: req.params.userId,
+    author: req.params.userId,
     productId: req.params.productId,
   });
 
@@ -59,22 +58,24 @@ export const newReview = async (req, res, next) => {
     await Review.create({
       comment,
       rating,
-      authorId: req.params.userId,
+      author: req.params.userId,
       productId: req.params.productId,
     });
   }
 
-  const { ratings, numOfReviews } = await findAverageRatings(product._id);
+  const { ratings, numOfReviews, numOfRatings } = await findAverageRatings(
+    product._id
+  );
 
   product.ratings = ratings;
   product.numOfReviews = numOfReviews;
+  product.numOfRatings = numOfRatings;
 
   await product.save();
 
   await invalidateCache({
     product: true,
     productId: String(product._id),
-    admin: true,
     Review: true,
   });
 
@@ -91,7 +92,7 @@ export const deleteReview = async (req, res, next) => {
   const review = await Review.findById(req.params.reviewId);
   if (!review) return next(new ErrorHandler("Review not Found", 404));
 
-  const isAuthenticUser = review.authorId.toString() === user._id.toString();
+  const isAuthenticUser = review.author._id.toString() === user._id.toString();
   if (!isAuthenticUser) return next(new ErrorHandler("Not Authorized", 401));
 
   await review.deleteOne();
@@ -99,17 +100,18 @@ export const deleteReview = async (req, res, next) => {
   const product = await Product.findById(review.productId);
   if (!product) return next(new ErrorHandler("Product not Found", 404));
 
-  const { ratings, numOfReviews } = await findAverageRatings(product._id);
+  const { ratings, numOfReviews,numOfRatings } = await findAverageRatings(product._id);
 
   product.ratings = ratings;
   product.numOfReviews = numOfReviews;
+  product.numOfRatings = numOfRatings;
 
   await product.save();
 
   await invalidateCache({
     product: true,
     productId: String(product._id),
-    admin: true,
+    review: true,
   });
 
   return res.status(200).json({

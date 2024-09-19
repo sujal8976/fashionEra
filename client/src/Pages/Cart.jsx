@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { itemDetails } from "@/utils/cartItemsDetail.js";
 import { useDispatch, useSelector } from "react-redux";
 import CartItems from "@/Components/CartItems";
 import {
@@ -10,23 +9,21 @@ import {
 import { useEffect } from "react";
 import toast from "react-hot-toast";
 
-const subTotal = itemDetails.reduce((sum, item) => sum + item.oldPrice, 0);
-const total = itemDetails.reduce((sum, item) => sum + item.price, 0);
-const tax = itemDetails.reduce((sum, item) => sum + item.price * 0.1, 0);
-
 export default function Cart() {
   const { cartItems, tax, shipping, total, subTotal, discount, loading } =
     useSelector((state) => state.cartReducer);
   const dispatch = useDispatch();
 
   const incrementHandler = (cartItem) => {
-    if (cartItem.quantity >= cartItem.stock) return toast.error("Product Stock limited reached."); 
+    if (cartItem.quantity >= cartItem.stock)
+      return toast.error("Product Stock limited reached.");
 
     dispatch(addToCart({ ...cartItem, quantity: cartItem.quantity + 1 }));
   };
 
   const decrementHandler = (cartItem) => {
-    if (cartItem.quantity <= 1) return toast.error("Product Stock limited reached.");
+    if (cartItem.quantity <= 1)
+      return toast.error("Product Stock limited reached.");
 
     dispatch(addToCart({ ...cartItem, quantity: cartItem.quantity - 1 }));
   };
@@ -41,7 +38,7 @@ export default function Cart() {
 
   return (
     <>
-      <div className="cartPage flex justify-center">
+      <div className="cartPage flex justify-center mb-10">
         <div className="cartPageContainer w-[1400px] flex flex-col">
           <div className="cartText text-5xl font-medium self-start my-14">
             <h1>Cart</h1>
@@ -56,6 +53,11 @@ export default function Cart() {
                 </h1>
               </div>
               <div className="cartItems flex flex-col py-5">
+                {cartItems.length === 0 && (
+                  <div className="self-center text-2xl font-bold">
+                    No Item Added to Cart
+                  </div>
+                )}
                 {cartItems.map((cartItem) => (
                   <CartItems
                     key={cartItem.productId}
@@ -83,23 +85,32 @@ export default function Cart() {
                     </li>
                     <li className="summaryItems flex justify-between text-lg font-normal mb-3">
                       Discount
-                      <span className="font-medium">
-                        &#8377;{discount- subTotal}
-                      </span>
+                      <span className="font-medium">&#8377;{discount}</span>
                     </li>
                     <li className="summaryItems flex justify-between text-lg font-normal mb-3">
-                      Tax<span className="font-medium">&#8377;{tax}</span>
+                      <div>
+                        Tax&nbsp;
+                        <span className="font-light italic">
+                          (5% on SubTotal)
+                        </span>
+                      </div>
+                      <span className="font-medium">&#8377;{tax}</span>
                     </li>
                     <li className="summaryItems flex justify-between text-lg font-normal mb-3">
                       Shipping
                       <span className="font-medium text-green-700">
-                        &#8377;{shipping? shipping:"Free"}
+                        &#8377;
+                        {shipping
+                          ? shipping
+                          : cartItems.length === 0
+                          ? 0
+                          : "Free"}
                       </span>
                     </li>
                     <li className="summaryItems flex justify-between text-lg font-normal">
                       Total
                       <span className="font-medium text-xl">
-                        &#8377;{total + tax}
+                        &#8377;{total}
                       </span>
                     </li>
                   </ul>
@@ -111,8 +122,14 @@ export default function Cart() {
                 </div>
                 <hr className="border-solid border-slate-500 w-[90%]" />
                 <div className="text-base font-normal self-center py-5">
-                  Estimated Delivery by{" "}
-                  <span className="font-medium">25 April, 2024</span>
+                  {cartItems.length === 0 ? (
+                    "No Items Added to Cart"
+                  ) : (
+                    <div>
+                      Estimated Delivery by&nbsp;
+                      <span className="font-medium">25 April, 2024</span>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

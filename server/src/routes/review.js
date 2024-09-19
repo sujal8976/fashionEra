@@ -8,7 +8,7 @@ import { wrapAsync } from "../middlewares/wrapAsync.js";
 
 const router = express.Router();
 
-router.post("/:userId/:productId/new", wrapAsync(newReview));
+router.post("/:userId/:productId", wrapAsync(newReview));
 router.delete("/:userId/:reviewId", wrapAsync(deleteReview));
 router.get("/:productId", wrapAsync(allReviewsOfProduct));
 

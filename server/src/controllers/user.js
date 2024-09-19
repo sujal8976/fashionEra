@@ -3,6 +3,24 @@ import ErrorHandler from "../utils/utility-class.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
+export const isUserExist = async (req, res, next) => {
+  const { email } = req.body;
+
+  if (!email) return next(new ErrorHandler("Email not Provided", 401));
+
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    return res.status(200).json({
+      userExist: false,
+    });
+  }
+
+  return res.status(200).json({
+    userExist: true,
+  });
+};
+
 export const newRegister = async (req, res, next) => {
   const { googleId, name, email, gender, image, phone, password } = req.body;
 

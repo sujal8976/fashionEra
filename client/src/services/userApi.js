@@ -43,5 +43,16 @@ export const getUser = async (id) => {
   }
 };
 
+export const isUserExist = async (email) => {
+  try {
+    const response = await axios.post(
+      `${import.meta.env.VITE_SERVER_URL}/api/v1/users/`, { email }
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const { useRegisterMutation, useLogoutMutation, useLoginMutation } =
   userApi;

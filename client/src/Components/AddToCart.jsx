@@ -1,51 +1,124 @@
+import { useDispatch } from "react-redux";
+import { addToCart } from "@/features/cartSlice";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { Minus, Plus } from "lucide-react";
+import toast from "react-hot-toast";
 import { useState } from "react";
 
-const sizes = ["s", "m", "l", "xl", "2xl", "3xl"];
+export default function AddToCart({ children, props }) {
+  const dispatch = useDispatch();
 
-export default function AddToCart() {
   const [selectedSize, setSelectedSize] = useState("");
+  const [selectedColor, setSelectedColor] = useState("");
+
+  const addToCartHandler = () => {
+    if (props.stock < 1) return toast.error("Out of Stock");
+    dispatch(
+      addToCart({
+        productId: props._id,
+        title: props.title,
+        description: props.description,
+        oldPrice: props.oldPrice,
+        sellingPrice: props.sellingPrice,
+        size: selectedSize,
+        color: selectedColor,
+        image: props.images[0],
+        stock: props.stock,
+        quantity: 1,
+      })
+    );
+    toast.success("Added to Cart");
+  };
 
   return (
-    <>
-      <div className="addToCart flex justify-center">
-        <div className="addToCartContainer flex flex-col border-[0.5px] border-slate-300 border-solid w-56 rounded-lg shadow-xl">
-          <h1 className="text-gray-800 text-xl font-medium text-center py-3">
-            Add to Cart
-          </h1>
-          <div className="selectSize mb-3">
-            <h1 className="font-normal text-center pb-1">Select Size</h1>
-            <div className="sizesBtn flex justify-center">
-              <div className="grid grid-cols-3 justify-items-center gap-1">
-                {sizes.map((size, index) => (
-                  <Button
-                    onClick={() => setSelectedSize(size)}
-                    variant={selectedSize === size ? "" : "outline"}
-                    className="w-12"
-                    key={index}
-                  >
-                    {size.toUpperCase()}
-                  </Button>
-                ))}
+    <Dialog>
+      <DialogTrigger asChild>{children}</DialogTrigger>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle>Add to Cart</DialogTitle>
+          <DialogDescription>Select Size and Color</DialogDescription>
+        </DialogHeader>
+        <div className="flex items-center gap-3 space-x-2">
+          <img
+            className="h-32 w-28 object-contain"
+            src={props.images[0]}
+            alt={props.title}
+          />
+          <div className="flex flex-col">
+            <h1 className="font-semibold">{props.title}</h1>
+            <p className="text-slate-500">{props.description}</p>
+            <div className="flex items-center gap-3 text-lg font-medium">
+              &#8377;{props.sellingPrice}
+              <div className="text-base font-normal text-slate-600 line-through">
+                &#8377;{props.oldPrice}
               </div>
             </div>
           </div>
-          <div className="quantity mb-3 flex justify-center">
-            {/* <h1 className="font-normal text-center pb-1">Quantity</h1>
-            <div className="flex justify-center items-center">
-              <Button variant="outline" className="w-12">
-                <Minus className="size-full p-0" />
-              </Button>
-              <div className="quantityDisplay text-lg p-2 px-3">1</div>
-              <Button variant="outline" className="w-12">
-                <Plus className="size-full p-0" />
-              </Button>
-            </div> */}
-            <Button>Add to Cart</Button>
-          </div>
         </div>
-      </div>
-    </>
+        <div className="flex justify-around">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline">
+                {selectedSize ? selectedSize.toUpperCase() : "Select Size"}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="center">
+              {props.sizes.map((size, i) => (
+                <DropdownMenuItem
+                  key={i}
+                  className="font-semibold"
+                  onClick={() => setSelectedSize(size)}
+                >
+                  {size.toUpperCase()}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline">
+                {selectedColor ? selectedColor.toUpperCase() : "Select Color"}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="center">
+              {props.color.map((col, i) => (
+                <DropdownMenuItem
+                  key={i}
+                  className="font-semibold"
+                  onClick={() => setSelectedColor(col)}
+                >
+                  {col.toUpperCase()}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+        <DialogFooter>
+          <DialogClose asChild>
+            <Button
+              onClick={() => addToCartHandler()}
+              disabled={!(selectedColor && selectedSize)}
+            >
+              Add To Cart
+            </Button>
+          </DialogClose>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }

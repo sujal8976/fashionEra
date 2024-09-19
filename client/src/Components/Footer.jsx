@@ -1,7 +1,7 @@
 export default function Footer() {
   return (
     <>
-      <div className="footer mt-10 flex justify-center py-[50px] bg-gradient-to-r from-black/[0.93] via-gray-700 to-gray-700/[0.79] text-white">
+      <div className="footer flex justify-center py-[50px] bg-gradient-to-r from-black/[0.93] via-gray-700 to-gray-700/[0.79] text-white">
         <div className="footerContainer w-[1400px] flex flex-col justify-center items-center gap-7">
           <div className="footerWrapper w-full grid grid-cols-3">
             <div className="contactInfo ">

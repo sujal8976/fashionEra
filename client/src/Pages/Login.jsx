@@ -13,11 +13,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
 import { auth } from "@/firebase/config.js";
-import { useLoginMutation, getUser } from "@/services/userApi";
+import { useLoginMutation, getUser, isUserExist } from "@/services/userApi";
 import { useDispatch } from "react-redux";
 import { userExist, userNotExist } from "@/features/userSlice";
+import { useNavigate } from "react-router-dom";
+import { isUserConfirming } from "@/features/confirmUserSlice";
 
 const formSchema = z.object({
   email: z.string().email({
@@ -31,6 +33,7 @@ const formSchema = z.object({
 export default function Login() {
   const [login] = useLoginMutation();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -67,12 +70,29 @@ export default function Login() {
 
   const googleAuthHandle = async () => {
     try {
+      dispatch(isUserConfirming(true));
       const provider = new GoogleAuthProvider();
       const { user } = await signInWithPopup(auth, provider);
+      dispatch(
+        userExist({
+          name: user.displayName,
+          email: user.email,
+          phone: user.phoneNumber,
+          profileUrl: user.photoURL,
+          googleId: user.uid,
+        })
+      );
 
-      toast.success(`Welcome ${user.displayName}`);
+      const data = await isUserExist(user.email);
+
+      if (data.userExist) navigate("/enter-pass");
+      else navigate("/confirm-user");
+
     } catch (error) {
+      await signOut(auth);
+      dispatch(userNotExist());
       toast.error("Authentication Failed");
+      dispatch(isUserConfirming(false));
     }
   };
 

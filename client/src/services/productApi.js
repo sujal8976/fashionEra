@@ -34,7 +34,15 @@ export const productApi = createApi({
       },
       providesTags: ["product"],
     }),
+    getProduct: builder.query({
+      query: (id) => `${id}`,
+      providesTags: ["product"],
+    }),
   }),
 });
 
-export const { useAllProductsQuery, useLatestProductQuery } = productApi;
+export const {
+  useAllProductsQuery,
+  useLatestProductQuery,
+  useGetProductQuery,
+} = productApi;

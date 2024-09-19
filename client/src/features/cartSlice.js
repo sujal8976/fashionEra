@@ -43,13 +43,19 @@ export const cartSlice = createSlice({
         0
       );
       state.shipping = state.subTotal < 1000 ? 0 : 150;
-      state.tax = Math.round(state.subTotal * 0.18);
-      state.total = state.subTotal + state.tax + state.shipping;
-      state.discount = state.cartItems.reduce(
+      const totalOldPrice = state.cartItems.reduce(
         (total, item) => total + item.oldPrice * item.quantity,
         0
       );
+      state.tax = Math.round(state.subTotal * 0.05);
+      state.total = state.subTotal + state.tax + state.shipping;
+      state.discount = state.cartItems.reduce(
+        (total, item) =>
+          total + (item.oldPrice - item.sellingPrice) * item.quantity,
+        0
+      );
     },
+
     resetCart: () => initialCartState,
   },
 });

@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import { fill } from "lodash";
 import {
   BarChart,
   Bar,

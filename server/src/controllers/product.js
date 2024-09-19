@@ -26,7 +26,12 @@ export const getProduct = async (req, res, next) => {
 
   if (cacheData.has(key)) product = JSON.parse(cacheData.get(key));
   else {
-    product = await Product.findById(req.params.id).populate("category");
+    product = await Product.findById(req.params.id).populate({
+      path: "category",
+      populate: {
+        path: "parentCategory",
+      },
+    });
     cacheData.set(key, JSON.stringify(product));
   }
 
@@ -158,7 +163,7 @@ export const newProduct = async (req, res, next) => {
     sizes,
     color,
   } = req.body;
-  
+
   const cat = await Category.findById(categoryId);
   if (!cat) return next(new ErrorHandler("No category Found", 404));
 

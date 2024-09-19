@@ -83,7 +83,18 @@ export default function Register() {
 
       if ("data" in res) {
         const data = await getUser(res.data.userId);
-        dispatch(userExist(data));
+        dispatch(
+          userExist({
+            userId: data.userId,
+            name: data.name,
+            email: data.email,
+            gender: data.gender,
+            phone: data.phone,
+            isAdmin: data.isAdmin,
+            profileUrl: data?.image || null,
+            googleId: data?.googleId || null,
+          })
+        );
         localStorage.setItem("currentUser", JSON.stringify(data));
         toast.success(res.data.message);
       } else {

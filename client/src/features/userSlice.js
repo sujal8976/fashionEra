@@ -2,7 +2,17 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialUserState = {
   loading: true,
-  user: null,
+  user: {
+    userId: "",
+    name: "",
+    email: "",
+    phone: "",
+    isAdmin: null,
+    profileUrl: "",
+    googleId: "",
+    gender: "",
+    address:{}
+  },
 };
 
 export const userSlice = createSlice({
