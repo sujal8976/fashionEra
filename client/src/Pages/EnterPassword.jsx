@@ -53,6 +53,7 @@ export default function EnterPassword() {
       } else {
         const error = res.error;
         const message = error.data.message;
+        await signOut(auth);
         dispatch(userNotExist());
         toast.error(message);
       }
